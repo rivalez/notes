@@ -17,13 +17,18 @@ public final class User {
     private final Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final Set<Note> notes = new HashSet<>();
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_project",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "project_id")}
     )
     private final Set<Project> projects = new HashSet<>();
+
+    private User() {
+        this.username = null;
+        this.role = Role.ADMIN;
+    }
 
     private User(String username, Role role) {
         this.username = username;
@@ -60,16 +65,12 @@ public final class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username) &&
-                role == user.role &&
-                Objects.equals(notes, user.notes) &&
-                Objects.equals(projects, user.projects);
+        return Objects.equals(username, user.username) &&
+                role == user.role;
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(username, role);
     }
 

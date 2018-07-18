@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface NoteService {
     Note findById(long id);
-
     List<Note> findByUser(User user);
-
     List<Note> findByProject(Project project);
 
-    void addNote(String title, String content, Project project, User user);
+    void addNote(String title, String content, String projectTitle, String username);
 }

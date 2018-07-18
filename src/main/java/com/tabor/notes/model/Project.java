@@ -20,6 +20,11 @@ public final class Project {
     @ManyToMany(mappedBy = "projects", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private final Set<User> participants = new HashSet<>();
 
+    private Project() {
+        this.owner = null;
+        this.title = null;
+    }
+
     private Project(String title, User owner) {
         this.title = title;
         this.owner = owner;
@@ -41,8 +46,12 @@ public final class Project {
         return Collections.unmodifiableSet(notes);
     }
 
-    public void addParticipant(User user) {
+    void addParticipant(User user) {
         this.participants.add(user);
+    }
+
+    public void addNote(Note note) {
+        this.notes.add(note);
     }
 
     public Set<User> getParticipants() {

@@ -19,6 +19,13 @@ public final class Note {
     @JoinColumn(name = "user_id", nullable = false)
     private final User user;
 
+    private Note() {
+        title = null;
+        content = null;
+        project = null;
+        user = null;
+    }
+
     private Note(String title, String content, Project project, User user) {
         this.title = title;
         this.content = content;

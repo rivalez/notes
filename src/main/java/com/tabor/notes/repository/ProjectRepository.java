@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, Long> {
-    List<Project> findByOwner(User user);
+    List<Project> findByOwner(User owner);
     List<Project> findByTitle(String title);
+
+    Project findByTitleAndOwner(String title, User owner);
 }

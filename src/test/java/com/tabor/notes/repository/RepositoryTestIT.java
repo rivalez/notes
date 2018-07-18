@@ -28,7 +28,7 @@ public class RepositoryTestIT {
     private ProjectRepository projectRepository;
 
     @Test
-    public void whenFindByUsername_thenReturnUser() {
+    public void whenFindByUsername_thenReturnUserWithCorrectDependencies() {
         //given
         final String username = "Marek";
         final User user = User.of(username, Role.ADMIN);
