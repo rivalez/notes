@@ -60,14 +60,17 @@ public final class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
+        return Objects.equals(id, user.id) &&
                 Objects.equals(username, user.username) &&
-                role == user.role;
+                role == user.role &&
+                Objects.equals(notes, user.notes) &&
+                Objects.equals(projects, user.projects);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, role);
+
+        return Objects.hash(username, role);
     }
 
     @Override

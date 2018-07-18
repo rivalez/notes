@@ -1,7 +1,7 @@
 package com.tabor.notes.model;
 
-import java.util.Objects;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public final class Note {
@@ -14,18 +14,20 @@ public final class Note {
     private final String content;
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    private final Project project;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private final User user;
 
-    private Note (String title, String content) {
+    private Note(String title, String content, Project project, User user) {
         this.title = title;
         this.content = content;
+        this.project = project;
+        this.user = user;
     }
 
-    public Note of(String title, String content) {
-        return new Note(title, content);
+    public static Note of(String title, String content, Project project, User user) {
+        return new Note(title, content, project, user);
     }
 
     public String getTitle() {
@@ -36,19 +38,28 @@ public final class Note {
         return content;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Note note = (Note) o;
-        return Objects.equals(id, note.id) &&
-                Objects.equals(title, note.title) &&
-                Objects.equals(content, note.content);
+        return Objects.equals(title, note.title) &&
+                Objects.equals(content, note.content) &&
+                Objects.equals(project, note.project) &&
+                Objects.equals(user, note.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, content);
+        return Objects.hash(title, content, project, user);
     }
 
     @Override
