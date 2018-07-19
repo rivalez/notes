@@ -1,5 +1,7 @@
 package com.tabor.notes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.HashSet;
@@ -7,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public final class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +61,10 @@ public final class User {
     public void addProject(Project project) {
         project.addParticipant(this);
         projects.add(project);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

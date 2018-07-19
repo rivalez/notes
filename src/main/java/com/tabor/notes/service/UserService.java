@@ -3,8 +3,13 @@ package com.tabor.notes.service;
 import com.tabor.notes.model.Role;
 import com.tabor.notes.model.User;
 
-public interface UserService {
-    void saveUser(String username, Role role);
+import java.util.List;
 
+public interface UserService {
+    User saveUser(String username, Role role);
+
+    User findById(Long id);
     User findByUsername(String username);
+
+    List<User> findAll();
 }

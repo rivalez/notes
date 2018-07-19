@@ -33,8 +33,8 @@ public class NoteServiceTestIT {
         final String username = "Adam";
         final String projectTitle = "Project title";
         userService.saveUser(username, Role.ADMIN);
-        final User userEntity = userService.findByUsername(username);
         projectService.save(projectTitle, username);
+        final User userEntity = userService.findByUsername(username);
         //when
         noteService.addNote("title", "content", projectTitle, username);
         final List<Note> notes = noteService.findByUser(userEntity);
