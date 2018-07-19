@@ -28,6 +28,9 @@ public final class User {
     )
     private final Set<Project> projects = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private final Set<ActivationProject> activationProjects = new HashSet<>();
+
     private User() {
         this.username = null;
         this.role = Role.ADMIN;
@@ -61,6 +64,10 @@ public final class User {
     public void addProject(Project project) {
         project.addParticipant(this);
         projects.add(project);
+    }
+
+    public Set<ActivationProject> getActivationProjects() {
+        return activationProjects;
     }
 
     public Long getId() {
