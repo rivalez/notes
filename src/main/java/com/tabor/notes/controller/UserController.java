@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User username) {
-        final User user = userService.saveUser(username.getUsername(), Role.ADMIN);
+        final User user = userService.saveUser(username.getUsername(), Role.ADMIN, username.getEmail());
         final URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).build();
     }

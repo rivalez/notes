@@ -41,9 +41,9 @@ public class UserControllerTest {
 
     @Test
     public void shouldCreateUserWithLocationUri() throws Exception {
-        User user = User.of("marek", Role.ADMIN);
+        User user = User.of("marek", Role.ADMIN, "email@email.com");
 
-        given(userService.saveUser(anyString(), any(Role.class)))
+        given(userService.saveUser(anyString(), any(Role.class), anyString()))
                 .willReturn(user);
 
         final MockHttpServletResponse response = mockMvc.perform(post("/users")
@@ -54,6 +54,4 @@ public class UserControllerTest {
         assertThat(response.getHeaders("Location")).hasSize(1);
         assertThat(response.getHeaders("Location").get(0)).contains("/users/");
     }
-
-
 }

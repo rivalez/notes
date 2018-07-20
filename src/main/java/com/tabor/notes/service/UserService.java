@@ -6,7 +6,7 @@ import com.tabor.notes.model.User;
 import java.util.List;
 
 public interface UserService {
-    User saveUser(String username, Role role);
+    User saveUser(String username, Role role, String email);
 
     User findById(Long id);
     User findByUsername(String username);

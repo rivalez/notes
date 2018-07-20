@@ -31,7 +31,7 @@ public class RepositoryTestIT {
     public void whenFindByUsername_thenReturnUserWithCorrectDependencies() {
         //given
         final String username = "Marek";
-        final User user = User.of(username, Role.ADMIN);
+        final User user = User.of(username, Role.ADMIN, "email@email.com");
         final Project project = Project.of("title", user);
         user.addProject(project);
         entityManager.persist(project);

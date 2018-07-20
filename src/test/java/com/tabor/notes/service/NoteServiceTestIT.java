@@ -32,7 +32,7 @@ public class NoteServiceTestIT {
         //given
         final String username = "Adam";
         final String projectTitle = "Project title";
-        userService.saveUser(username, Role.ADMIN);
+        userService.saveUser(username, Role.ADMIN, "email@email.com");
         projectService.save(projectTitle, username);
         final User userEntity = userService.findByUsername(username);
         //when

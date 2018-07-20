@@ -27,22 +27,24 @@ public final class User {
             inverseJoinColumns = {@JoinColumn(name = "project_id")}
     )
     private final Set<Project> projects = new HashSet<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private final Set<ActivationProject> activationProjects = new HashSet<>();
+    private final Set<ProjectInvitation> projectInvitations = new HashSet<>();
+    private final String email;
 
     private User() {
         this.username = null;
+        this.email = null;
         this.role = Role.ADMIN;
     }
 
-    private User(String username, Role role) {
+    private User(String username, Role role, String email) {
         this.username = username;
         this.role = role;
+        this.email = email;
     }
 
-    public static User of(String username, Role role) {
-        return new User(username, role);
+    public static User of(String username, Role role, String email) {
+        return new User(username, role, email);
     }
 
     public String getUsername() {
@@ -66,12 +68,16 @@ public final class User {
         projects.add(project);
     }
 
-    public Set<ActivationProject> getActivationProjects() {
-        return activationProjects;
+    public Set<ProjectInvitation> getProjectInvitations() {
+        return projectInvitations;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override

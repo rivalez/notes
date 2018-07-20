@@ -20,14 +20,14 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveUser(String username, Role role) {
+    public User saveUser(String username, Role role, String email) {
         return Optional.ofNullable(repository.findByUsername(username))
-                .orElseGet(() -> repository.save(User.of(username, role)));
+                .orElseGet(() -> repository.save(User.of(username, role, email)));
     }
 
     @Override
     public User findById(Long id) {
-        final User blankUser = User.of("non existing user", Role.ADMIN);
+        final User blankUser = User.of("non existing user", Role.ADMIN, "non existing email");
         return repository.findById(id).orElse(blankUser);
     }
 

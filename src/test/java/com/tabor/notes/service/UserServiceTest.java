@@ -32,11 +32,12 @@ public class UserServiceTest {
     @Test
     public void shouldNotSaveTheSameUserManyTimes() {
         //given
-        User user = User.of("marek", Role.ADMIN);
+        final String email = "email@email.com";
+        User user = User.of("marek", Role.ADMIN, email);
         //when
-        userService.saveUser(user.getUsername(), user.getRole());
-        userService.saveUser(user.getUsername(), user.getRole());
-        userService.saveUser(user.getUsername(), user.getRole());
+        userService.saveUser(user.getUsername(), user.getRole(), email);
+        userService.saveUser(user.getUsername(), user.getRole(), email);
+        userService.saveUser(user.getUsername(), user.getRole(), email);
         final List<User> all = userService.findAll();
         //then
         assertThat(all).hasSize(1);
