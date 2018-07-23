@@ -22,7 +22,5 @@ public class MailSenderService {
         message.setFrom("noreply@domain.com");
 
         sender.send(message);
-
     }
-
 }

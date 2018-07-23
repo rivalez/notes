@@ -24,6 +24,7 @@ public class SharingController {
 
     @GetMapping("/confirm")
     public void confirm(@RequestParam("token") String token) {
-
+        //findByToken in projectInvitation repository
+        piService.activate(token);
     }
 }
