@@ -27,7 +27,7 @@ public final class User {
             inverseJoinColumns = {@JoinColumn(name = "project_id")}
     )
     private final Set<Project> projects = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private final Set<ProjectInvitation> projectInvitations = new HashSet<>();
     private final String email;
 
@@ -69,7 +69,11 @@ public final class User {
     }
 
     public Set<ProjectInvitation> getProjectInvitations() {
-        return projectInvitations;
+        return Collections.unmodifiableSet(projectInvitations);
+    }
+
+    public void removeProjectInvitation(ProjectInvitation invitation) {
+        projectInvitations.remove(invitation);
     }
 
     public Long getId() {

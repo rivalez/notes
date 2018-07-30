@@ -11,20 +11,20 @@ public final class ProjectInvitation {
     @ManyToOne
     @JoinColumn(name = "projectInvitation_id")
     private final User user;
-    private final String activationToken;
+    private final String token;
 
     @OneToOne
     private final Project project;
 
     private ProjectInvitation() {
         this.project = null;
-        this.activationToken = null;
+        this.token = null;
         this.user = null;
     }
 
-    private ProjectInvitation(User user, String activationToken, Project project) {
+    private ProjectInvitation(User user, String token, Project project) {
         this.user = user;
-        this.activationToken = activationToken;
+        this.token = token;
         this.project = project;
     }
 
@@ -36,7 +36,11 @@ public final class ProjectInvitation {
         return user;
     }
 
-    public String getActivationToken() {
-        return activationToken;
+    public String getToken() {
+        return token;
+    }
+
+    public Project getProject() {
+        return project;
     }
 }

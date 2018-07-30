@@ -1,6 +1,5 @@
 package com.tabor.notes.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tabor.notes.Application;
 import com.tabor.notes.model.Role;
 import com.tabor.notes.model.SharingProject;
@@ -9,14 +8,12 @@ import com.tabor.notes.repository.ProjectInvitationRepository;
 import com.tabor.notes.service.ProjectService;
 import com.tabor.notes.service.UserService;
 import com.tabor.notes.service.project.sharing.MailSenderService;
-import com.tabor.notes.service.project.sharing.ProjectInvitationService;
-import com.tabor.notes.service.project.sharing.ProjectInvitationServiceImpl;
+import com.tabor.notes.service.project.sharing.TokenGenerator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -28,6 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,12 +47,12 @@ public class SharingControllerTest {
     @Autowired
     private ProjectInvitationRepository piRepository;
 
-    private ProjectInvitationService piService;
+    @MockBean
+    private TokenGenerator tokenGenerator;
 
     @Before
     public void setUp() {
-        piService = new ProjectInvitationServiceImpl(userService, piRepository, mailSender, projectService);
-        JacksonTester.initFields(this, new ObjectMapper());
+        when(tokenGenerator.generate()).thenReturn("token");
         restTemplate = new TestRestTemplate();
     }
 
@@ -82,6 +80,8 @@ public class SharingControllerTest {
         String token = "token";
         restTemplate.exchange("http://localhost:" + port + "/confirm?token=" + token, HttpMethod.GET, new HttpEntity<>(token), String.class);
 
-        assertThat(userService.findByUsername(receiver).getProjects()).hasSize(1);
+        final User resultUser = userService.findByUsername(receiver);
+        assertThat(resultUser.getProjects()).hasSize(1);
+        assertThat(resultUser.getProjectInvitations()).isEmpty();
     }
 }

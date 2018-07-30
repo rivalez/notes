@@ -1,6 +1,5 @@
 package com.tabor.notes.service;
 
-import com.google.common.collect.FluentIterable;
 import com.tabor.notes.model.Role;
 import com.tabor.notes.model.User;
 import com.tabor.notes.repository.UserRepository;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public final class UserServiceImpl implements UserService {
@@ -26,6 +27,11 @@ public final class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(User user) {
+        return repository.save(user);
+    }
+
+    @Override
     public User findById(Long id) {
         final User blankUser = User.of("non existing user", Role.ADMIN, "non existing email");
         return repository.findById(id).orElse(blankUser);
@@ -38,6 +44,6 @@ public final class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return FluentIterable.from(repository.findAll()).toList();
+        return StreamSupport.stream(repository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 }

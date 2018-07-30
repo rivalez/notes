@@ -10,4 +10,6 @@ import java.util.Set;
 @Repository
 public interface ProjectInvitationRepository extends CrudRepository<ProjectInvitation, Long> {
     Set<ProjectInvitation> findByUser(User user);
+
+    ProjectInvitation findByToken(String token);
 }

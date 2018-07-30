@@ -16,24 +16,37 @@ public class ProjectInvitationServiceImpl implements ProjectInvitationService {
     private final ProjectInvitationRepository piRepository;
     private final MailSenderService mailSender;
     private final ProjectService projectService;
+    private final TokenGenerator tokenGenerator;
 
     @Autowired
-    public ProjectInvitationServiceImpl(UserService userService, ProjectInvitationRepository piRepository, MailSenderService mailSender, ProjectService projectService) {
+    public ProjectInvitationServiceImpl(UserService userService, ProjectInvitationRepository piRepository, MailSenderService mailSender, ProjectService projectService, TokenGenerator tokenGenerator) {
         this.userService = userService;
         this.piRepository = piRepository;
         this.mailSender = mailSender;
         this.projectService = projectService;
+        this.tokenGenerator = tokenGenerator;
     }
 
     @Override
     public void share(SharingProject sharingProject, String appUrl) {
         final User user = userService.findByUsername(sharingProject.getReceiver());
-        String token = "token";
+        String token = tokenGenerator.generate();
         final Project project = projectService.findByTitleAndOwner(sharingProject.getProjectTitle(), sharingProject.getSender());
         if (project != null) {
             final ProjectInvitation invitation = ProjectInvitation.of(user, token, project);
             mailSender.sendEmail(token, user.getEmail(), appUrl);
             piRepository.save(invitation);
+        }
+    }
+
+    @Override
+    public void activate(String token) {
+        final ProjectInvitation toActivate = piRepository.findByToken(token);
+        if (toActivate != null) {
+            final User user = toActivate.getUser();
+            user.addProject(toActivate.getProject());
+            user.removeProjectInvitation(toActivate);
+            userService.update(user);
         }
     }
 }
