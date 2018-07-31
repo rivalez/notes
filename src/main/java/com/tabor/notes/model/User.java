@@ -3,18 +3,22 @@ package com.tabor.notes.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(schema = "public")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public final class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username")
+    @NotEmpty
     private final String username;
     @Column(name = "role")
     private final Role role;
@@ -29,6 +33,7 @@ public final class User {
     private final Set<Project> projects = new HashSet<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private final Set<ProjectInvitation> projectInvitations = new HashSet<>();
+    @Email
     private final String email;
 
     private User() {
@@ -100,10 +105,6 @@ public final class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", role=" + role +
-                '}';
+        return String.format("User{id=%d, username='%s', role=%s, email='%s'}", id, username, role, email);
     }
 }

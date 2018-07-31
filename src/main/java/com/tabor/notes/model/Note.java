@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(schema = "public")
 public final class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

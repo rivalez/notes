@@ -3,6 +3,7 @@ package com.tabor.notes.model;
 import javax.persistence.*;
 
 @Entity
+@Table(schema = "public")
 public final class ProjectInvitation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
